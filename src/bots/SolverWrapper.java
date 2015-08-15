@@ -126,20 +126,31 @@ public class SolverWrapper {
     },
     new Solver[] { // Recursion
       new Solver() { public void solve() { // Single Param Test Function
-        P.l("What is the argument? testFunction(X)");
+      // this is actually fibonacci
+        P.l("What is the argument\nin testFunction(X)");
         P.il("X : ");
-        // this is actually fibonacci
         int nth = P.getInt();
+        P.bl();
+        // get argument
+
         double phin = Math.pow((1 + Math.sqrt(5)) / 2, nth);
         double ans = (phin - (Math.pow(-1, nth) / phin)) / Math.sqrt(5);
+        // calculate fibonacci sequence at argument
+
         P.il("Answer : " + ((int) ans));
       }},
       new Solver() { // Two Param Test Function
         public void solve() {
-          P.l("What are the arguments? testFunction(X,Y)");
+          // couldnt find out the mathematical equivalent
+          // so im just gonna brute force it
+          P.l("What are the arguments?\ntestFunction(X,Y)");
           P.il("X Y : ");
           int ans = testFunction(P.getInt(), P.getInt());
+          P.bl();
+          // get args and process
+
           P.il("Answer : " + ans);
+          // print answer
         }
         private int testFunction(int n, int k) {
           if(k == 0 || k == n) return 1;
