@@ -1,33 +1,31 @@
+import java.util.*;
 
 public class SolverWrapper {
 
-  private static Solver[][] solver = new Solver[][] {
+  public static Solver[][] solver = new Solver[][] {
     new Solver[] { // Linked List
       new Solver() { public void solve() { // Queue
-        P.l("Type the queue from peek to tail");
+        P.l("Type queue from peek to tail.");
         Vector<Integer> q = P.getIntVector();
+        P.bl();
         // populate queue
 
-        P.l("Type in the operations.");
-        P.l("1 X : q.enqueue(X);");
-        P.l("2   : q.dequeue();");
-        P.l("-1  : end");
-        // request operation type
-
-        int raw = P.getInt();
-        while(raw != -1) {
-          if(raw == 1) {
-            q.add(P.getInt());
-          }else if(raw == 2){
+        P.l("Copy paste the code here: ");
+        Vector<String> lines = P.getLinesPasted("-1");
+        for(String lns : lines) {
+          if(lns.charAt(2) == 'e') {
+            lns = lns.substring(10);
+            lns = lns.substring(0, lns.length() - 2);
+            q.add(Integer.parseInt(lns));
+          }else {
             if(q.size() == 0) {
               break;
-              // escape on dequeue of an empty
             }else {
               q.remove(0);
             }
           }
-          raw = P.getInt();
         }
+        P.bl();
         // carry out operations
 
         P.il("Answer : ");
@@ -36,6 +34,7 @@ public class SolverWrapper {
         }else {
           P.l(q.firstElement().toString());
         }
+        // print answer
       }},
       new Solver() { public void solve() { // Singly Sum
         P.l("Type the array in bold");
@@ -464,7 +463,6 @@ public class SolverWrapper {
                   }
 
                   if(canSortIn) {
-                    sorted.lastElement().add(keys.get(i));
                     markToSort[i] = true;
                     manageToSort = true;
                     sortCount++;
@@ -478,7 +476,10 @@ public class SolverWrapper {
             }
 
             for(int i = 0; i < markToSort.length; i++) {
-              if(markToSort[i]) sortFlag[i] = true;
+              if(markToSort[i]) {
+                sorted.lastElement().add(keys.get(i));
+                sortFlag[i] = true;
+              }
             }
             // flush sorted flag, if immediate set and no flush it may cause
             // non causal another attempt; without gen advance to not trigger

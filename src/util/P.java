@@ -36,12 +36,32 @@ public class P {
 
   // PRINT OUTPUT SIMPLE ------------------------------------------------------
 
+  public static void bl() {
+    P.l("------------------------------");
+  }
+
+  // PRINT OUTPUT STYLING -----------------------------------------------------
+
   /**
    * Get the next line of user input
    * @return user input
    */
   public static String getStrLine() {
     return sc.nextLine();
+  }
+
+  /**
+   * Returns a vector of lines of input
+   */
+  public static Vector<String> getLinesPasted(String delim) {
+    Vector<String> lines = new Vector<String>();
+    P.l("end with <enter>-1<enter>");
+    do {
+      lines.add(sc.nextLine());
+    }while(!lines.lastElement().equalsIgnoreCase(delim));
+    lines.remove(0);
+    lines.remove(lines.size() - 1);
+    return lines;
   }
 
   /**
@@ -88,6 +108,7 @@ public class P {
     else if(choice > choices.length) choice = choices.length;
     // request and parse user input
 
+    P.nl();
     return choice;
   }
 
@@ -97,7 +118,7 @@ public class P {
    * @return  user input in the form of an Integer Vector
    */
   public static Vector<Integer> getIntVector() {
-    P.l("Use -1 as delimiter");
+    P.l("end with -1");
     P.l("i.e: 1 2 3 4 -1");
     P.il("Arr : ");
     // print message and instructions
@@ -111,7 +132,6 @@ public class P {
       q.add(raw);
       raw = P.getInt();
     }
-    P.nl();
     // request till delimiter encountered
 
     return q;
