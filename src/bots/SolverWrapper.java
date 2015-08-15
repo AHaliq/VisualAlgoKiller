@@ -126,7 +126,7 @@ public class SolverWrapper {
     },
     new Solver[] { // Recursion
       new Solver() { public void solve() { // Single Param Test Function
-      // this is actually fibonacci
+        // this is actually fibonacci
         P.l("What is the argument\nin testFunction(X)");
         P.il("X : ");
         int nth = P.getInt();
@@ -158,45 +158,50 @@ public class SolverWrapper {
         }
       },
        new Solver() { public void solve() { // doSomethingCool
-        P.l("Copy and paste the doSomethingCool");
-        P.l("method here and press enter");
+        P.l("Copy paste the code here");
+        Vector<String> lines = P.getLinesPasted("-1");
+        P.bl();
+        // get pseudocode
 
-        P.getStrLine();
-        String raw = P.getStrLine();
-        int lineCount = 0;
+        lines.remove(lines.size() -1);
+        String outerLine = lines.lastElement();
+        lines.remove(lines.size() - 1);
+        for(int i = 0; i < 3; i++) lines.remove(0);
+        // isolate lines of interest
+
         boolean innerLinear = false;
         int outerType = 0;
         // 0: 1, 1: O(inf), 2: n*
-        while(!raw.equalsIgnoreCase("}"))
-        {
-          lineCount++;
-          if(lineCount == 4 || lineCount == 5) { // linear O() if + -
-            String[] parts = raw.split("\\s+");
-            if(parts[9].equalsIgnoreCase("j++)") ||
-            parts[9].equalsIgnoreCase("k--)") ||
-            parts[10].equalsIgnoreCase("+=") ||
-            parts[10].equalsIgnoreCase("-=")) {
-                 innerLinear = true;
-            }
-          }else if(lineCount == 6) {
-            String[] parts = raw.split("\\s+");
-            raw = parts[2];
-            raw = raw.substring(16, raw.length() - 1);
-            if(raw.length() == 1) { // multiply 1 if < 3 else infinite
-              if(raw.equalsIgnoreCase("n")) outerType = 1;
-              else outerType = Integer.parseInt(raw) < 3 ? 0 : 1;
-            }else { // if - is linear outer multiply else multiply 1
-              outerType = raw.charAt(1) == '-' ? 2 : 0;
-            }
+
+        for(String lns : lines) {
+          String[] parts = lns.split("\\s+");
+          if(parts[9].equalsIgnoreCase("j++)") ||
+          parts[9].equalsIgnoreCase("k--)") ||
+          parts[10].equalsIgnoreCase("+=") ||
+          parts[10].equalsIgnoreCase("-=")) {
+               innerLinear = true;
           }
-          raw = P.getStrLine();
         }
+        // process inner loops
+
+        String[] parts = outerLine.split("\\s+");
+        outerLine = parts[2];
+        outerLine = outerLine.substring(16, outerLine.length() - 1);
+        if(outerLine.length() == 1) {
+          if(outerLine.equalsIgnoreCase("n")) outerType =1;
+          else outerType = Integer.parseInt(outerLine) < 3 ? 0 : 1;
+        }else {
+          outerType = outerLine.charAt(1) == '-' ? 2 : 0;
+        }
+        // process outer line
+
         P.il("Answer : ");
         if(outerType == 1) P.l("Infinite Loop");
         else if(outerType == 2 && innerLinear) P.l("O(n^2)");
         else if(outerType == 2 && !innerLinear) P.l("O(n log n)");
         else if(outerType == 0 && innerLinear) P.l("O(n)");
         else if(outerType == 0 && !innerLinear) P.l("O(log n)");
+        // print answer
       }}
     },
     new Solver[] { // Sorting
