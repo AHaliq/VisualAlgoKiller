@@ -1,0 +1,33 @@
+<?xml version = "1.0" encoding"UTF-8"?>
+
+<property name = "main-class"   value = "VisualAlgoKiller" />
+<property name = "src.dir"      value = "src" />
+<property name = "bin.dir"      value = "bin" />
+
+<project
+  default = "run"
+  name = "VisualAlgoKiller"
+>
+  <target
+    name = "run"
+    depends = "compile"
+  >
+    <java
+      classname = "${main-class}"
+    >
+      <classpath
+        path = "${src.dir}"
+      />
+    </java>
+
+  </target>
+  <target
+    name = "compile"
+  >
+    <javac
+      includeantruntime = "false"
+      srcdir = "${src.dir}"
+      destdir = "${bin.dir}"
+    />
+  </target>
+</project>
