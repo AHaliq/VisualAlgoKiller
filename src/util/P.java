@@ -1,9 +1,16 @@
 import java.util.*;
 
 public class P {
+
+  // VARIABLES ================================================================
+  // ==========================================================================
+
   /** Scanner object used to take in input */
   private static Scanner sc = new Scanner(System.in);
+  // OBJECTS ------------------------------------------------------------------
 
+  // METHODS ==================================================================
+  // ==========================================================================
   /**
    * Print out param and prepare next line
    * @param msg   argument
@@ -27,6 +34,33 @@ public class P {
     System.out.println("");
   }
 
+  // PRINT OUTPUT SIMPLE ------------------------------------------------------
+
+  /**
+   * Get the next line of user input
+   * @return user input
+   */
+  public static String getStrLine() {
+    return sc.nextLine();
+  }
+
+  /**
+   * Get the next string token
+   * @return user input
+   */
+  public static String getStr() {
+    return sc.next();
+  }
+
+  /**
+   * Get the next integer token
+   * @return user input
+   */
+  public static int getInt() {
+    return sc.nextInt();
+  }
+
+  // SIMPLE INPUT REQUEST -----------------------------------------------------
   /**
    * Prompt the user a header message and request user to make a selection
    * @param header    message
@@ -58,30 +92,6 @@ public class P {
   }
 
   /**
-   * Get the next line of user input
-   * @return user input
-   */
-  public static String getStrLine() {
-    return sc.nextLine();
-  }
-
-  /**
-   * Get the next string token
-   * @return user input
-   */
-  public static String getStr() {
-    return sc.next();
-  }
-
-  /**
-   * Get the next integer token
-   * @return user input
-   */
-  public static int getInt() {
-    return sc.nextInt();
-  }
-
-  /**
    * Prompt the user the expected format of an array input and returns a Vector
    * of that array
    * @return  user input in the form of an Integer Vector
@@ -90,14 +100,22 @@ public class P {
     P.l("Use -1 as delimiter");
     P.l("i.e: 1 2 3 4 -1");
     P.il("Arr : ");
+    // print message and instructions
+
     int raw;
     Vector<Integer> q = new Vector<Integer>();
+    // prepare temp registers
+
     raw = P.getInt();
     while(raw != -1) {
       q.add(raw);
       raw = P.getInt();
     }
     P.nl();
+    // request till delimiter encountered
+
     return q;
   }
+
+  // COMPLEX COMPOUND ACTIONS -------------------------------------------------
 }
