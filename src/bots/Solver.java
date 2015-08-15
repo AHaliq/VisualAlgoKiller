@@ -1,0 +1,3 @@
+interface Solver {
+  void solve();
+}
