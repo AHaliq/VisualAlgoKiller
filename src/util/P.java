@@ -51,20 +51,6 @@ public class P {
   }
 
   /**
-   * Returns a vector of lines of input
-   */
-  public static Vector<String> getLinesPasted(String delim) {
-    Vector<String> lines = new Vector<String>();
-    P.l("end with <enter>-1<enter>");
-    do {
-      lines.add(sc.nextLine());
-    }while(!lines.lastElement().equalsIgnoreCase(delim));
-    lines.remove(0);
-    lines.remove(lines.size() - 1);
-    return lines;
-  }
-
-  /**
    * Get the next string token
    * @return user input
    */
@@ -81,6 +67,7 @@ public class P {
   }
 
   // SIMPLE INPUT REQUEST -----------------------------------------------------
+
   /**
    * Prompt the user a header message and request user to make a selection
    * @param header    message
@@ -135,6 +122,38 @@ public class P {
     // request till delimiter encountered
 
     return q;
+  }
+
+  /**
+   * Returns a vector of lines of input
+   */
+  public static Vector<String> getLinesPasted() {
+    Vector<String> lines = new Vector<String>();
+    P.l("end with <enter>-1<enter>");
+    do {
+      lines.add(sc.nextLine());
+    }while(!lines.lastElement().equalsIgnoreCase("-1"));
+    if(lines.get(0).equalsIgnoreCase("")) lines.remove(0);
+    lines.remove(lines.size() - 1);
+    return lines;
+  }
+
+  public static Vector<Integer> getArrayFromLine() {
+    P.l("numbers/NULL/, only. No []");
+
+    Vector<Integer> arr = new Vector<Integer>();
+    String str = P.getStrLine();
+    if(str.equalsIgnoreCase("")) str = P.getStrLine();
+
+    String[] parts = str.split("\\s+");
+    if(parts.length == 1) parts = str.split(",");
+    
+    for(int i = 0; i < parts.length; i++) {
+      String raw = parts[i].split(",")[0];
+      raw = raw.equalsIgnoreCase("NULL") ? "0" : raw;
+      arr.add(Integer.parseInt(raw));
+    }
+    return arr;
   }
 
   // COMPLEX COMPOUND ACTIONS -------------------------------------------------

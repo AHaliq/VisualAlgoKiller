@@ -11,7 +11,7 @@ public class SolverWrapper {
         // populate queue
 
         P.l("Copy paste the code here");
-        Vector<String> lines = P.getLinesPasted("-1");
+        Vector<String> lines = P.getLinesPasted();
         // get pseudocode
 
         for(String lns : lines) {
@@ -39,13 +39,13 @@ public class SolverWrapper {
         // print answer
       }},
       new Solver() { public void solve() { // Singly Sum
-        P.l("Type the array in bold");
-        Vector<Integer> ll = P.getIntVector();
+        P.l("Paste the array in bold");
+        Vector<Integer> ll = P.getArrayFromLine();
         P.bl();
         // populate ll
 
         P.l("Copy paste the code here");
-        Vector<String> lines = P.getLinesPasted("-1");
+        Vector<String> lines = P.getLinesPasted();
         lines.remove(lines.size() - 1);
         for(int i = 0; i < 3; i++) lines.remove(0);
         P.bl();
@@ -101,7 +101,7 @@ public class SolverWrapper {
         // populate st
 
         P.l("Copy paste the code here");
-        Vector<String> lines = P.getLinesPasted("-1");
+        Vector<String> lines = P.getLinesPasted();
         // get pseudocode
 
         for(String lns : lines) {
@@ -157,9 +157,9 @@ public class SolverWrapper {
           return testFunction(n - 1, k - 1) + testFunction(n - 1, k);
         }
       },
-       new Solver() { public void solve() { // doSomethingCool
+      new Solver() { public void solve() { // doSomethingCool
         P.l("Copy paste the code here");
-        Vector<String> lines = P.getLinesPasted("-1");
+        Vector<String> lines = P.getLinesPasted();
         P.bl();
         // get pseudocode
 
@@ -207,20 +207,24 @@ public class SolverWrapper {
     new Solver[] { // Sorting
       new Solver() { // How many X sort
         public void solve() {
-          P.l("Type in the array in question");
-          Vector<Integer> arr = P.getIntVector();
-          // populate array
-
-          P.l("How many _____");
+          P.l("How many _____ is/are");
           P.l("1 : passes\n2 : swaps\n3 : comparisons");
           int option = P.getInt();
+          P.bl();
+          // get quantity type
 
-          P.l("... using this version of _____ sort");
+          P.l("Paste the array here");
+          Vector<Integer> arr = P.getArrayFromLine();
+          P.bl();
+          // populate array
+
+          P.l("...version of _____ sort");
           P.l("1 : bubble\n2 : insertion");
-
           int type = P.getInt();
-          int ans = 0;
+          P.bl();
+          // get sort type
 
+          int ans = 0;
           if(type == 1) {
             if(option == 2) ans = bubbleSwap(arr);
             else ans = option == 1 ? bubblePC(arr)[0] : bubblePC(arr)[1];
@@ -228,10 +232,13 @@ public class SolverWrapper {
             if(option == 3) ans = insertionComparisons(arr);
             // no insertion passes OR swaps question
           }
+          // select appropriate method
 
-          P.il("Answers : ");
-          P.l(ans+"");
+          P.l("Answers : " + ans);
+          // print answer
         }
+
+        /** Method as given from question */
         private int bubbleSwap(Vector<Integer> arr) {
           int swapCount = 0;
           for(int j = 0; j < arr.size(); j++) {
@@ -246,6 +253,8 @@ public class SolverWrapper {
           }
           return swapCount;
         }
+
+        /** Method as given from question */
         private int[] bubblePC(Vector<Integer> arr) {
           int[] count = {0, 0};
           int j = 0;
@@ -266,6 +275,8 @@ public class SolverWrapper {
           }while(swapped);
           return count;
         }
+
+        /** Method as given from question */
         private int insertionComparisons(Vector<Integer> arr) {
           int compCount = 0;
           for(int i = 1; i < arr.size(); i++) {
@@ -287,27 +298,36 @@ public class SolverWrapper {
       },
       new Solver() { // sequence after passes
         public void solve() {
-          P.l("Type in the array in question");
-          Vector<Integer> arr = P.getIntVector();
+          P.l("Paste the array here");
+          Vector<Integer> arr = P.getArrayFromLine();
+          P.bl();
           // populate array
+
           P.l("Type in the number of passes");
           int passes = P.getInt();
+          P.bl();
           // get pass amount
+
           P.l("...this version of ____ sort");
           P.l("1 : Bubble\n2 : Insertion\n3 : Selection");
           int type = P.getInt();
+          P.bl();
           // get sort type
 
           if(type == 1) arr = bubblePass(passes, arr);
           else if(type == 2) arr = insertionPass(passes, arr);
           else if(type == 3) arr = selectionPass(passes, arr);
+          // select method to process
 
           P.il("Answer : ");
           for(int i : arr) {
             P.il(i + " ");
           }
           P.nl();
+          // print answer
         }
+
+        /** method from question */
         private Vector<Integer> insertionPass(int pass, Vector<Integer> arr) {
           for(int i = 1; i <= pass; i++) {
             int e = arr.get(i);
@@ -324,6 +344,8 @@ public class SolverWrapper {
           }
           return arr;
         }
+
+        /** method from question */
         private Vector<Integer> selectionPass(int pass, Vector<Integer> arr) {
           for(int i = 0; i < pass; i++) {
             int cur_min = i;
@@ -338,6 +360,8 @@ public class SolverWrapper {
           }
           return arr;
         }
+
+        /** method from question */
         private Vector<Integer> bubblePass(int pass, Vector<Integer> arr) {
           for(int j = 0; j < pass; j++) {
             for(int i = 0; i < arr.size() - j - 1; i++) {
@@ -352,28 +376,36 @@ public class SolverWrapper {
         }
       },
       new Solver() { public void solve() { // quicksort
-        P.l("Type in the array in question");
-        Vector<Integer> arr = P.getIntVector();
+        P.l("Paste the array here");
+        Vector<Integer> arr = P.getArrayFromLine();
+        P.bl();
         // populate array
 
         Vector<Integer> results = new Vector<Integer>();
         // initialize possible integers that may be pivots
 
         for(int i = 0 ; i < arr.size(); i++) {
+
           boolean valid = true;
+
           for(int j = 0; j < arr.size(); j++) {
+
             if((j < i && arr.get(j) >= arr.get(i)) ||
             (j > i && arr.get(j) < arr.get(i)))
               valid = false;
               // if any on left is larger or right is smaller
               // its definitely not a pivot
           }
+
           if(valid && results.indexOf(arr.get(i)) == -1) {
             results.add(arr.get(i));
           }
           // dont add again if integer already exists
         }
+        // process array
+
         P.l("Answer : " + results.size());
+        // print answer
       }}
     },
     new Solver[] { // Hashing
@@ -381,10 +413,23 @@ public class SolverWrapper {
         P.l("What type of probe?");
         P.l("1 : Linear\n2 : Quadratic\n3 : sec 11 - k % 11");
         int type = P.getInt();
+        P.bl();
+        // get probing type
+
         P.l("What is the hash table size");
         int m = P.getInt();
-        P.l("Enter the keys to insert");
-        Vector<Integer> arr = P.getIntVector();
+        P.bl();
+        // get table size
+
+        P.l("Paste the keys to insert");
+        Vector<Integer> arr = P.getArrayFromLine();
+        P.bl();
+        // get keys
+
+        P.l("Paste the results");
+        Vector<Integer> resQ = P.getArrayFromLine();
+        P.bl();
+        // get results
 
         int[] res = new int[m];
         for(int i : arr) {
@@ -399,43 +444,56 @@ public class SolverWrapper {
           }while(res[index] != 0);
           res[index] =i;
         }
+        // calculate results from keys
 
-        P.il("Answer : ");
-        for(int i : res) {
-          P.il(((i == 0) ? "NULL" : i)+" ");
+        boolean correct = true;
+        for(int i = 0 ; i < res.length; i ++) {
+          if(res[i] != resQ.get(i)) {
+            correct = false;
+            break;
+          }
         }
+        // compare with results
+
+        P.il("Answer : " + (correct ? "Yes" : "No"));
         P.nl();
+        // print answer
       }},
       new Solver() { // Suppose Table
         public void solve() {
           P.l("What type of probe?");
           P.l("1 : Linear\n2 : Quadratic\n3 : sec 11 - k % 11");
           int type = P.getInt();
+          P.bl();
+          // get type
+
           int m = 13;
+
           P.l("What is the key of to delete");
           int key = P.getInt();
-          P.l("Write the hash table from head to tail, let null be 0");
-          Vector<Integer> ht = P.getIntVector();
+          P.bl();
+          // get key
+
+          P.l("Paste the table 2nd row");
+          Vector<Integer> ht = P.getArrayFromLine();
+          P.bl();
+          // get keys
 
           Vector<Integer> probes = new Vector<Integer>();
-
           int count = 0;
-          probes.add(getHash(key, 0, type, m));
+          probes.add(HashUtil.getHash(key, 0, type, m));
           while (ht.get(probes.lastElement()) != key) {
               count++;
-              probes.add(getHash(key, count, type, m));
+              probes.add(HashUtil.getHash(key, count, type, m));
           }
+          // calculate probe sequence
+
           P.il("Answer : ");
           for(int i : probes) {
             P.il(i +" ");
           }
           P.nl();
-        }
-        /** TODO duplicated in m 12, find out how to share */
-        private int getHash(int key, int gen, int type, int m) {
-          if(type == 1) return (key + gen) % m;
-          else if(type == 2) return (key + gen * gen) % m;
-          return (key + gen * (11 - key % 11)) % m;
+          // print answer
         }
       },
       new Solver() { // Consdier m 12
@@ -444,11 +502,19 @@ public class SolverWrapper {
           P.l("What type of probe?");
           P.l("1 : Linear\n2 : Quadratic\n3 : sec 11 - k % 11");
           int type = P.getInt();
+          // get probe type
+
           int m = 12;
-          P.l("Write the list of keys");
-          Vector<Integer> keys = P.getIntVector();
-          P.l("Write the hash table from head to tail, let null be 0");
-          Vector<Integer> ht = P.getIntVector();
+
+          P.l("Paste the keys array (not table)");
+          Vector<Integer> keys = P.getArrayFromLine();
+          P.bl();
+          // get keys
+
+          P.l("Paste the table");
+          Vector<Integer> ht = P.getArrayFromLine();
+          P.bl();
+          // get hash table
 
           int sortCount = 0;
           int gen = 0;
@@ -468,7 +534,8 @@ public class SolverWrapper {
               if(!sortFlag[i]) {
                 // go through all unsorted
 
-                if(ht.get(getHash(keys.get(i), gen, type, m)) == keys.get(i)) {
+                if(ht.get(HashUtil.getHash(keys.get(i), gen, type, m)) ==
+                keys.get(i)) {
                   // if current generation hash matches hashtable
 
                   boolean canSortIn = false;
@@ -478,7 +545,8 @@ public class SolverWrapper {
                   }else {
 
                     int prevGenOccupantInd =
-                    keys.indexOf(ht.get(getHash(keys.get(i), gen - 1, type, m)));
+                    keys.indexOf(ht.get(
+                    HashUtil.getHash(keys.get(i), gen - 1, type, m)));
                     // get occupant index in keys of previous generation hash
 
                     if(prevGenOccupantInd != -1 && sortFlag[prevGenOccupantInd]) {
@@ -530,6 +598,7 @@ public class SolverWrapper {
             // go to next generation if current generation hash
             // has no slot and prev gen collision matchup with sorted
           } while (sortCount < keys.size());
+          // generate potential sequences
 
           P.il("Answer : ");
           if(impossible) P.l(" you copied smth wrong, its impossible");
@@ -545,11 +614,7 @@ public class SolverWrapper {
             P.l("values in boxes can be in any order");
             P.l("boxes however must be in order");
           }
-        }
-        private int getHash(int key, int gen, int type, int m) {
-          if(type == 1) return (key + gen) % m;
-          else if(type == 2) return (key + gen * gen) % m;
-          return (key + gen * (11 - key % 11)) % m;
+          // print answer
         }
       }
     }
