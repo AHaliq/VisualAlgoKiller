@@ -89,38 +89,39 @@ public class SolverWrapper {
           }
         }
         // carry out operations
-        
+
         P.il("Answer : ");
         P.l((error ? "No Answer" : sum).toString());
+        // print answer
       }},
       new Solver() { public void solve() { // Stack
         P.l("Type the st from peek to end");
         Vector<Integer> st = P.getIntVector();
+        P.bl();
         // populate st
 
-        P.l("Type in the operations -1 to end.");
-        P.l("1 X : st.push(X);");
-        P.l("2   : st.pop();");
-        P.l("-1  : end");
+        P.l("Copy paste the code here");
+        Vector<String> lines = P.getLinesPasted("-1");
+        // get pseudocode
 
-        int raw = P.getInt();
-        boolean error = false;
-        while(raw != -1) {
-          if(raw == 1) {
-            st.add(0, P.getInt());
-          }else if(raw == 2) {
+        for(String lns : lines) {
+          if(lns.charAt(4) == 'u') {
+            lns = lns.substring(8);
+            lns = lns.substring(0, lns.length() - 2);
+            st.add(0, Integer.parseInt(lns));
+          }else {
             if(st.size() == 0) {
-              error = true;
               break;
             }else {
               st.remove(0);
             }
           }
-          raw = P.getInt();
         }
-        if(st.size() == 0) error = true;
-        P.il("Answer : ");
-        P.l((error ? "No Answer" : st.get(0)).toString());
+        P.bl();
+        // carry out operations
+
+        P.l("Answer : " + (st.size() == 0 ? "No Answer" : st.get(0)));
+        // print answer
       }}
     },
     new Solver[] { // Recursion
