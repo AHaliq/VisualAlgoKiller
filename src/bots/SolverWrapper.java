@@ -10,8 +10,10 @@ public class SolverWrapper {
         P.bl();
         // populate queue
 
-        P.l("Copy paste the code here: ");
+        P.l("Copy paste the code here");
         Vector<String> lines = P.getLinesPasted("-1");
+        // get pseudocode
+
         for(String lns : lines) {
           if(lns.charAt(2) == 'e') {
             lns = lns.substring(10);
@@ -39,48 +41,55 @@ public class SolverWrapper {
       new Solver() { public void solve() { // Singly Sum
         P.l("Type the array in bold");
         Vector<Integer> ll = P.getIntVector();
+        P.bl();
         // populate ll
+
+        P.l("Copy paste the code here");
+        Vector<String> lines = P.getLinesPasted("-1");
+        lines.remove(lines.size() - 1);
+        for(int i = 0; i < 3; i++) lines.remove(0);
+        P.bl();
+        // get pseudocode
 
         int pos = 0;
         int sum = 0;
         boolean error = false;
-
-        P.l("Copy and paste here the pseudocode after");
-        P.l("'Node n = list.head...' including 'print sum;'");
-        P.l("and press enter");
-        String raw = P.getStrLine();
-        while(!raw.equalsIgnoreCase("print sum;"))
-        {
-          if(!error) {
-            switch(raw) {
-              case "n = list.head;":
+        loop:for(String lns : lines) {
+          switch(lns) {
+            case "n = list.head;":
               pos = 0;
-              break;
-              case "sum += list.head.value;":
+            break;
+            case "sum += list.head.value;":
               sum += ll.get(0);
-              break;
-              case "n = list.tail;":
+            break;
+            case "n = list.tail;":
               pos = ll.size() - 1;
-              break;
-              case "sum += list.tail.value;":
+            break;
+            case "sum += list.tail.value;":
               sum += ll.get(ll.size() - 1);
-              break;
-              case "sum += n.value;":
-              if(pos == ll.size()) error = true;
-              else sum += ll.get(pos);
-              break;
-              case "n = n.next;":
-              if(pos == ll.size()) error = true;
-              else pos++;
-              break;
-              case "sum += n.next.value;":
-              if(pos >= ll.size() - 1) error = true;
-              else sum += ll.get(pos + 1);
-              break;
-            }
+            break;
+            case "sum += n.value;":
+              if(pos == ll.size()) {
+                error = true;
+                break loop;
+              } else sum += ll.get(pos);
+            break;
+            case "n = n.next;":
+              if(pos == ll.size()) {
+                error = true;
+                break loop;
+              } else pos++;
+            break;
+            case "sum += n.next.value;":
+              if(pos >= ll.size() - 1) {
+                error = true;
+                break loop;
+              } else sum += ll.get(pos + 1);
+            break;
           }
-          raw = P.getStrLine();
         }
+        // carry out operations
+        
         P.il("Answer : ");
         P.l((error ? "No Answer" : sum).toString());
       }},
