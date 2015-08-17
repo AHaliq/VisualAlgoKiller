@@ -171,7 +171,7 @@ public class SolverWrapper {
 
         boolean innerLinear = false;
         int outerType = 0;
-        // 0: 1, 1: O(inf), 2: n*
+        // 0: 1, 1: O(inf), 2: n, 3: log(n)
 
         for(String lns : lines) {
           String[] parts = lns.split("\\s+");
@@ -191,16 +191,17 @@ public class SolverWrapper {
           if(outerLine.equalsIgnoreCase("n")) outerType =1;
           else outerType = Integer.parseInt(outerLine) < 3 ? 0 : 1;
         }else {
-          outerType = outerLine.charAt(1) == '-' ? 2 : 0;
+          outerType = outerLine.charAt(1) == '-' ? 2 : 3;
         }
         // process outer line
 
         P.il("Answer : ");
         if(outerType == 1) P.l("Infinite Loop");
         else if(outerType == 2 && innerLinear) P.l("O(n^2)");
-        else if(outerType == 2 && !innerLinear) P.l("O(n log n)");
+        else if((outerType == 2 && !innerLinear) || (outerType == 3 && innerLinear)) P.l("O(n log n)");
         else if(outerType == 0 && innerLinear) P.l("O(n)");
         else if(outerType == 0 && !innerLinear) P.l("O(log n)");
+        else if(outerType == 3 && !innerLinear) P.l("O(log^2 n)");
         // print answer
       }}
     },
@@ -496,127 +497,125 @@ public class SolverWrapper {
           // print answer
         }
       },
-      new Solver() { // Consdier m 12
-        public void solve() {
-          // this solver is expecting a length 12 HT
-          P.l("What type of probe?");
-          P.l("1 : Linear\n2 : Quadratic\n3 : sec 11 - k % 11");
-          int type = P.getInt();
-          // get probe type
+      new Solver() { public void solve() { // Consdier m 12
+        // this solver is expecting a length 12 HT
+        P.l("What type of probe?");
+        P.l("1 : Linear\n2 : Quadratic\n3 : sec 11 - k % 11");
+        int type = P.getInt();
+        // get probe type
 
-          int m = 12;
+        int m = 12;
 
-          P.l("Paste the keys array (not table)");
-          Vector<Integer> keys = P.getArrayFromLine();
-          P.bl();
-          // get keys
+        P.l("Paste the keys array (not table)");
+        Vector<Integer> keys = P.getArrayFromLine();
+        P.bl();
+        // get keys
 
-          P.l("Paste the table");
-          Vector<Integer> ht = P.getArrayFromLine();
-          P.bl();
-          // get hash table
+        P.l("Paste the table");
+        Vector<Integer> ht = P.getArrayFromLine();
+        P.bl();
+        // get hash table
 
-          int sortCount = 0;
-          int gen = 0;
-          boolean impossible = false;
-          boolean gensFirstTime = true;
-          boolean[] sortFlag = new boolean[m];
-          Vector<Vector<Integer>> sorted = new Vector<Vector<Integer>>();
+        int sortCount = 0;
+        int gen = 0;
+        boolean impossible = false;
+        boolean gensFirstTime = true;
+        boolean[] sortFlag = new boolean[m];
+        Vector<Vector<Integer>> sorted = new Vector<Vector<Integer>>();
 
-          do {
-            sorted.add(new Vector<Integer>());
+        do {
+          sorted.add(new Vector<Integer>());
 
-            boolean didntFindMatchYet = false;
-            boolean manageToSort = false;
-            boolean[] markToSort = new boolean[m];
-            for(int i = 0; i < keys.size(); i++) {
+          boolean didntFindMatchYet = false;
+          boolean manageToSort = false;
+          boolean[] markToSort = new boolean[m];
+          for(int i = 0; i < keys.size(); i++) {
 
-              if(!sortFlag[i]) {
-                // go through all unsorted
+            if(!sortFlag[i]) {
+              // go through all unsorted
 
-                if(ht.get(HashUtil.getHash(keys.get(i), gen, type, m)) ==
-                keys.get(i)) {
-                  // if current generation hash matches hashtable
+              if(ht.get(HashUtil.getHash(keys.get(i), gen, type, m)) ==
+              keys.get(i)) {
+                // if current generation hash matches hashtable
 
-                  boolean canSortIn = false;
-                  if(gen == 0) {
+                boolean canSortIn = false;
+                if(gen == 0) {
+                  canSortIn = true;
+                  // can sort in if first generation
+                }else {
+
+                  int prevGenOccupantInd =
+                  keys.indexOf(ht.get(
+                  HashUtil.getHash(keys.get(i), gen - 1, type, m)));
+                  // get occupant index in keys of previous generation hash
+
+                  if(prevGenOccupantInd != -1 && sortFlag[prevGenOccupantInd]) {
                     canSortIn = true;
-                    // can sort in if first generation
-                  }else {
-
-                    int prevGenOccupantInd =
-                    keys.indexOf(ht.get(
-                    HashUtil.getHash(keys.get(i), gen - 1, type, m)));
-                    // get occupant index in keys of previous generation hash
-
-                    if(prevGenOccupantInd != -1 && sortFlag[prevGenOccupantInd]) {
-                      canSortIn = true;
-                    }
-                    // if collision exist in previous generation
-                    // "prev gen slot is occupied by an already sorted key"
                   }
-
-                  if(canSortIn) {
-                    markToSort[i] = true;
-                    manageToSort = true;
-                    sortCount++;
-                  }
-                  // sort into latest group and update flag
+                  // if collision exist in previous generation
+                  // "prev gen slot is occupied by an already sorted key"
                 }
-              }else {
-                didntFindMatchYet = true;
-                // indicating slot may exist in future generations
+
+                if(canSortIn) {
+                  markToSort[i] = true;
+                  manageToSort = true;
+                  sortCount++;
+                }
+                // sort into latest group and update flag
               }
+            }else {
+              didntFindMatchYet = true;
+              // indicating slot may exist in future generations
             }
-
-            for(int i = 0; i < markToSort.length; i++) {
-              if(markToSort[i]) {
-                sorted.lastElement().add(keys.get(i));
-                sortFlag[i] = true;
-              }
-            }
-            // flush sorted flag, if immediate set and no flush it may cause
-            // non causal another attempt; without gen advance to not trigger
-
-            if((gensFirstTime && !manageToSort && !didntFindMatchYet) || gen == 12) {
-              impossible = true;
-              break;
-            }
-            // if this is the first time entering the generation and yet no
-            // slot + prev gen collision matchup exist for a non slotted
-
-            gensFirstTime = false;
-            // mark attempting another round of current generation hash
-
-            if(!manageToSort || gen == 0) {
-              if(gen > 0) sorted.remove(sorted.size() - 1);
-              // remove empty group as algo will create a new one on next
-              // iteration and this one yielded nothing
-              gen++;
-              gensFirstTime = true;
-            }
-            // go to next generation if current generation hash
-            // has no slot and prev gen collision matchup with sorted
-          } while (sortCount < keys.size());
-          // generate potential sequences
-
-          P.il("Answer : ");
-          if(impossible) P.l(" you copied smth wrong, its impossible");
-          else {
-            for(Vector<Integer> arr : sorted) {
-              P.il("[");
-              for(int i : arr) {
-                P.il(i + " ");
-              }
-              P.il("] ");
-            }
-            P.nl();
-            P.l("values in boxes can be in any order");
-            P.l("boxes however must be in order");
           }
-          // print answer
+
+          for(int i = 0; i < markToSort.length; i++) {
+            if(markToSort[i]) {
+              sorted.lastElement().add(keys.get(i));
+              sortFlag[i] = true;
+            }
+          }
+          // flush sorted flag, if immediate set and no flush it may cause
+          // non causal another attempt; without gen advance to not trigger
+
+          if((gensFirstTime && !manageToSort && !didntFindMatchYet) || gen == 12) {
+            impossible = true;
+            break;
+          }
+          // if this is the first time entering the generation and yet no
+          // slot + prev gen collision matchup exist for a non slotted
+
+          gensFirstTime = false;
+          // mark attempting another round of current generation hash
+
+          if(!manageToSort || gen == 0) {
+            if(gen > 0) sorted.remove(sorted.size() - 1);
+            // remove empty group as algo will create a new one on next
+            // iteration and this one yielded nothing
+            gen++;
+            gensFirstTime = true;
+          }
+          // go to next generation if current generation hash
+          // has no slot and prev gen collision matchup with sorted
+        } while (sortCount < keys.size());
+        // generate potential sequences
+
+        P.il("Answer : ");
+        if(impossible) P.l(" you copied smth wrong, its impossible");
+        else {
+          for(Vector<Integer> arr : sorted) {
+            P.il("[");
+            for(int i : arr) {
+              P.il(i + " ");
+            }
+            P.il("] ");
+          }
+          P.nl();
+          P.l("values in boxes can be in any order");
+          P.l("boxes however must be in order");
         }
-      }
+        // print answer
+      }}
     }
   };
 }
