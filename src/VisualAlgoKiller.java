@@ -24,7 +24,8 @@ public class VisualAlgoKiller {
             "Linked List",
             "Recursion",
             "Sorting",
-            "Hash Table");
+            "Hash Table", 
+            "Binary Heap");
       int choice2 = 1;
       // request topic
 
@@ -32,28 +33,32 @@ public class VisualAlgoKiller {
           "Select your question type ";
       switch(choice) {
         case 1:
-        choice2 = P.getChoice(requestMsg,
+          choice2 = P.getChoice(requestMsg,
             "Queue",
             "Singly Sum",
             "Stack");
         break;
         case 2:
-        choice2 = P.getChoice(requestMsg,
+          choice2 = P.getChoice(requestMsg,
             "TestFunction 1 param ",
             "TestFunction 2 param",
             "doSomethingCool");
         break;
         case 3:
-        choice2 = P.getChoice(requestMsg,
+          choice2 = P.getChoice(requestMsg,
             "How many X; this __ sort",
             "Sequence",
             "Quicksort");
         break;
         case 4:
-        choice2 = P.getChoice(requestMsg,
+          choice2 = P.getChoice(requestMsg,
             "Suppose... Yes/No",
             "Suppose... table sequence",
             "Consider... m=12");
+        break;
+        case 5:
+          choice2 = P.getChoice(requestMsg,
+            "What is the _ number of _");
         break;
       }
       // request question

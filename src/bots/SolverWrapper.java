@@ -220,14 +220,6 @@ public class SolverWrapper {
             P.l(innerLinear ? "O(n)" : "O(log^2 n)");
           break;
         }
-        /*
-        if(outerType == 1) P.l("Infinite Loop");
-        else if(outerType == 2 && innerLinear) P.l("O(n^2)");
-        else if((outerType == 2 && !innerLinear) || (outerType == 3 && innerLinear)) P.l("O(n log n)");
-        else if(outerType == 0 && innerLinear) P.l("O(n)");
-        else if(outerType == 0 && !innerLinear) P.l("O(log n)");
-        else if(outerType == 3 && !innerLinear) P.l("O(log^2 n)");
-        // print answer*/
       }}
     },
     new Solver[] { // Sorting
@@ -640,6 +632,42 @@ public class SolverWrapper {
           P.l("boxes however must be in order");
         }
         // print answer
+      }}
+    },
+    new Solver[] { // BinaryHeap
+      new Solver() { public void solve() { // what is the _ no of _
+        P.l("1 MAX or 2 MIN");
+        boolean isMax = (P.getInt() == 1);
+        P.bl();
+        // get isMax
+
+        P.l("1 swaps or 2 comparisons");
+        boolean isSwap = (P.getInt() == 1);
+        P.bl();
+        // get operation type
+
+        P.l("Whats the heap size");
+        int size = P.getInt();
+        P.bl();
+        // get heap size
+
+        int ans = 0;
+
+        if(isSwap && !isMax) {
+          ans = 0;
+        } else if(!isMax && !isSwap) {
+          ans = (size >> 1) * 2 - ((size + 1) % 2);
+        }else {
+          for(int i = 1; i <= (size >> 1); i++) {
+            for(int j = i; (j << 1) <= size; j = j << 1) {
+              ans++;
+            }
+          }
+          if(!isSwap) ans *= 2;
+          if(!isSwap && size % 2 == 0) ans--;
+        }
+
+        P.l("Answer : " + ans);
       }}
     }
   };
