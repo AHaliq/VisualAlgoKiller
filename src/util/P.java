@@ -66,6 +66,10 @@ public class P {
     return sc.nextInt();
   }
 
+  public static String getNext() {
+    return sc.next();
+  }
+
   // SIMPLE INPUT REQUEST -----------------------------------------------------
 
   /**
@@ -147,7 +151,7 @@ public class P {
 
     String[] parts = str.split("\\s+");
     if(parts.length == 1) parts = str.split(",");
-    
+
     for(int i = 0; i < parts.length; i++) {
       String raw = parts[i].split(",")[0];
       raw = raw.equalsIgnoreCase("NULL") ? "0" : raw;
