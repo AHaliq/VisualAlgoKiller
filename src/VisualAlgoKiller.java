@@ -64,8 +64,7 @@ public class VisualAlgoKiller {
 
       P.bl();
       P.l("Solve another question? [y/n]");
-      repeat == P.getStrLine().equalsIgnoreCase("y");
-      P.l("==============================");
-    }while(repeat)
+      repeat = P.getNext().equalsIgnoreCase("y");
+    }while(repeat);
   }
 }
