@@ -137,7 +137,7 @@ public class SolverWrapper {
         double ans = (phin - (Math.pow(-1, nth) / phin)) / Math.sqrt(5);
         // calculate fibonacci sequence at argument
 
-        P.il("Answer : " + ((int) ans));
+        P.l("Answer : " + ((int) ans));
       }},
       new Solver() { // Two Param Test Function
         public void solve() {
@@ -149,7 +149,7 @@ public class SolverWrapper {
           P.bl();
           // get args and process
 
-          P.il("Answer : " + ans);
+          P.l("Answer : " + ans);
           // print answer
         }
         private int testFunction(int n, int k) {
@@ -182,27 +182,52 @@ public class SolverWrapper {
                innerLinear = true;
           }
         }
+        // +- are linear, */ are number of elements in the geometric series
+        // before rounding to meeting the criteria of the for loop
         // process inner loops
 
         String[] parts = outerLine.split("\\s+");
         outerLine = parts[2];
         outerLine = outerLine.substring(16, outerLine.length() - 1);
         if(outerLine.length() == 1) {
-          if(outerLine.equalsIgnoreCase("n")) outerType =1;
-          else outerType = Integer.parseInt(outerLine) < 3 ? 0 : 1;
+          if(outerLine.equalsIgnoreCase("n")) {
+            outerType = 1;
+            // n unchanging recursion parameter is endless recursion
+          } else {
+            outerType = Integer.parseInt(outerLine) < 3 ? 0 : 1;
+            // constant parameter larger than base case is endless recursion
+            // constant parameter meeting base case is O(1)
+          }
         }else {
           outerType = outerLine.charAt(1) == '-' ? 2 : 3;
+          // + - operation in parameter on n is linear recursion O(n)
+          // * / operation in parameter is a geometric sum
         }
         // process outer line
 
         P.il("Answer : ");
+        switch(outerType) {
+          case 0: // O(1) Recursion
+            P.l(innerLinear ? "O(n)" : "O(log n)");
+          break;
+          case 1: //endless Recursion
+            P.l("Infinite Loop");
+          break;
+          case 2: // O(n) Recursion
+            P.l(innerLinear ? "O(n^2)" : "O(n log n)");
+          break;
+          case 3: // geometric sum Recursion
+            P.l(innerLinear ? "O(n)" : "O(log^2 n)");
+          break;
+        }
+        /*
         if(outerType == 1) P.l("Infinite Loop");
         else if(outerType == 2 && innerLinear) P.l("O(n^2)");
         else if((outerType == 2 && !innerLinear) || (outerType == 3 && innerLinear)) P.l("O(n log n)");
         else if(outerType == 0 && innerLinear) P.l("O(n)");
         else if(outerType == 0 && !innerLinear) P.l("O(log n)");
         else if(outerType == 3 && !innerLinear) P.l("O(log^2 n)");
-        // print answer
+        // print answer*/
       }}
     },
     new Solver[] { // Sorting
